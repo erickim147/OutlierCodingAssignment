@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.api.domain.cart.mapper.CartMapper">
+
+    <resultMap type="com.shop.api.domain.cart.dto.CartDTO" id="cartDTO">
+        <result column="CART_ID" property="cartId"/>
+        <result column="MEMBER_ID" property="memberId"/>
+        <result column="PRODUCT_ID" property="productId"/>
+        <result column="AMOUNT" property="amount"/>
+        <result column="CART_CREATE_TIME" property="cartCreateTime"/>
+        <result column="PRICE" property="price"/>
+    </resultMap>
+
+    <resultMap type="com.shop.api.domain.product.dto.ProductDTO" id="productDTO">
+        <result column="PD_IDX" property="pdIdx"/>
+        <result column="PD_SELLER_ID" property="pdSellerId"/>
+        <result column="PD_LARGE_CAT" property="pdLargeCat"/>
+        <result column="PD_MIDDLE_CAT" property="pdMiddleCat"/>
+        <result column="PD_SUB_CAT" property="pdSubCat"/>
+        <result column="PD_NAME" property="pdName"/>
+        <result column="PD_PRICE" property="pdPrice"/>
+        <result column="PD_DISCOUNT" property="pdDiscount"/>
+        <result column="SET_SALE_PERIOD" property="setSalePeriod"/>
+        <result column="PD_SALE_PERIOD" property="pdSalePeriod"/>
+        <result column="PD_STOCK" property="pdStock"/>
+        <result column="PD_DESC" property="pdDesc"/>
+        <result column="PD_DELIVERY_CHARGE" property="pdDeliveryCharge"/>
+    </resultMap>
+
+    <insert id="saveCart" parameterType="com.shop.api.domain.cart.dto.CartDTO">
+        INSERT INTO tb_cart (
+           MEMBER_ID, PRODUCT_ID,AMOUNT, CART_CREATE_TIME, PRICE
+        ) VALUES (
+            #{memberId}, #{productId}, #{amount}, NOW(), #{price}
+        )
+    </insert>
+
+    <select id="selectProductPrice" parameterType="long" resultType="int">
+        SELECT PD_PRICE FROM tb_product WHERE PD_IDX = #{productId}
+    </select>
+
+    <select id="selectProductCount" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM tb_product WHERE PD_IDX = #{productId}
+    </select>
+    
+    <select id="selectCartCount" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM tb_cart WHERE PRODUCT_ID = #{productId}
+    </select>
+
+    <select id="selectCartMemberIdCnt" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM tb_cart WHERE MEMBER_ID = #{memberId}
+    </select>
+
+    <select id="selectAllProduct" parameterType="list" resultMap="productDTO">
+        SELECT * FROM tb_product
+        WHERE PD_IDX IN
+        <foreach collection="list" item="item" open="(" close=")"  separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectAllCart" resultMap="cartDTO">
+        SELECT * FROM tb_cart ORDER BY PRODUCT_ID
+    </select>
+
+    <select id="selectProductId" parameterType="string" resultType="string">
+        SELECT PRODUCT_ID FROM tb_cart WHERE MEMBER_ID = #{memberId}
+    </select>
+
+    <delete id="deleteCart" parameterType="long">
+        DELETE FROM tb_cart WHERE PRODUCT_ID = #{productId}
+    </delete>
+
+    <delete id="deleteAll" parameterType="string">
+        DELETE FROM tb_cart WHERE MEMBER_ID = #{memberId}
+    </delete>
+
+
+
+</mapper>

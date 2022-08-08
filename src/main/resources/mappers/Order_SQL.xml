@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.api.domain.order.mapper.OrderMapper">
+
+    <resultMap type="com.shop.api.domain.order.dto.OrderDTO" id="orderDTO">
+        <result column="ORDER_ID" property="orderId"/>
+        <result column="MEMBER_ID" property="memberId"/>
+        <result column="PRODUCT_ID" property="productId"/>
+        <result column="CART_ID" property="cartId"/>
+        <result column="TOTAL_PRICE" property="totalPrice"/>
+        <result column="TOTAL_AMOUNT" property="totalAmount"/>
+        <result column="ORDER_CREATE_TIME" property="orderCreateTime"/>
+    </resultMap>
+
+    <resultMap type="com.shop.api.domain.cart.dto.CartDTO" id="cartDTO">
+        <result column="CART_ID" property="cartId"/>
+        <result column="MEMBER_ID" property="memberId"/>
+        <result column="PRODUCT_ID" property="productId"/>
+        <result column="AMOUNT" property="amount"/>
+        <result column="CART_CREATE_TIME" property="cartCreateTime"/>
+        <result column="PRICE" property="price"/>
+    </resultMap>
+
+    <resultMap type="com.shop.api.domain.product.dto.ProductDTO" id="productDTO">
+        <result column="PD_IDX" property="pdIdx"/>
+        <result column="PD_SELLER_ID" property="pdSellerId"/>
+        <result column="PD_LARGE_CAT" property="pdLargeCat"/>
+        <result column="PD_MIDDLE_CAT" property="pdMiddleCat"/>
+        <result column="PD_SUB_CAT" property="pdSubCat"/>
+        <result column="PD_NAME" property="pdName"/>
+        <result column="PD_PRICE" property="pdPrice"/>
+        <result column="PD_DISCOUNT" property="pdDiscount"/>
+        <result column="SET_SALE_PERIOD" property="setSalePeriod"/>
+        <result column="PD_SALE_PERIOD" property="pdSalePeriod"/>
+        <result column="PD_STOCK" property="pdStock"/>
+        <result column="PD_DESC" property="pdDesc"/>
+        <result column="PD_DELIVERY_CHARGE" property="pdDeliveryCharge"/>
+    </resultMap>
+    <!--
+    <resultMap type="com.shop.api.domain.order.dto.OrderDTO" id="resultOrderDTO" autoMapping="true">
+        <result column="o.ORDER_ID" property="orderId" javaType="long"/>
+        <result column="o.MEMBER_ID" property="memberId" javaType="long"/>
+        <result column="o.PRODUCT_ID" property="productId" javaType="String"/>
+        <result column="o.CART_ID" property="cartId" javaType="long"/>
+        <result column="o.TOTAL_PRICE" property="totalPrice" javaType="long"/>
+        <result column="o.TOTAL_AMOUNT" property="totalAmount" javaType="long"/>
+        <collection property="productInfo" javaType="com.shop.api.domain.product.dto.ProductDTO" >
+            <id column="p.PD_IDX" property="pdIdx" javaType="long"/>
+            <result column="p.PD_SELLER_ID" property="pdSellerId" javaType="String"/>
+            <result column="p.PD_LARGE_CAT" property="pdLargeCat" javaType="String"/>
+            <result column="p.PD_MIDDLE_CAT" property="pdMiddleCat" javaType="String"/>
+            <result column="p.PD_SUB_CAT" property="pdSubCat" javaType="String"/>
+            <result column="p.PD_NAME" property="pdName" javaType="String"/>
+            <result column="p.PD_PRICE" property="pdPrice" javaType="int"/>
+            <result column="p.PD_DISCOUNT" property="pdDiscount" javaType="int"/>
+            <result column="p.SET_SALE_PERIOD" property="setSalePeriod" javaType="boolean"/>
+            <result column="p.PD_SALE_PERIOD" property="pdSalePeriod" javaType="String"/>
+            <result column="p.PD_STOCK" property="pdStock" javaType="int"/>
+            <result column="p.PD_DESC" property="pdDesc" javaType="String"/>
+            <result column="p.PD_DELIVERY_CHARGE" property="pdDeliveryCharge" javaType="int"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectAll" parameterType="list" resultMap="resultOrderDTO">
+        SELECT
+            o.ORDER_ID, o.MEMBER_ID, o.PRODUCT_ID,
+            o.TOTAL_PRICE, o.TOTAL_AMOUNT, p.PD_IDX,
+            p.PD_SELLER_ID, p.PD_LARGE_CAT, p.PD_MIDDLE_CAT,
+            p.PD_SUB_CAT, p.PD_NAME, p.PD_PRICE, p.PD_DISCOUNT,
+            p.SET_SALE_PERIOD, p.PD_SALE_PERIOD, p.PD_STOCK,
+            p.PD_DESC, p.PD_DELIVERY_CHARGE
+        FROM
+            tb_order o JOIN tb_product p
+        ON p.PD_IDX = o.PRODUCT_ID
+        WHERE o.PRODUCT_ID IN
+        <foreach collection="list" item="item" open="(" close=")"  separator=",">
+            #{item}
+        </foreach>
+    </select>
+    -->
+    <select id="selectAllProduct" parameterType="list" resultMap="productDTO">
+        SELECT * FROM tb_product
+        WHERE PD_IDX IN
+        <foreach collection="list" item="item" open="(" close=")"  separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectAllOrder" resultMap="orderDTO">
+        SELECT * FROM tb_order ORDER BY PRODUCT_ID
+    </select>
+
+    <select id="selectProductId" parameterType="string" resultType="Integer">
+        SELECT PRODUCT_ID FROM tb_order WHERE MEMBER_ID = #{memberId}
+    </select>
+
+    <select id="selectCartCount" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM tb_cart WHERE CART_ID = #{cartId}
+    </select>
+
+    <select id="selectCart" parameterType="long" resultMap="cartDTO">
+        SELECT MEMBER_ID, PRODUCT_ID, AMOUNT, PRICE FROM tb_cart WHERE CART_ID = #{cartId}
+    </select>
+
+    <insert id="saveOrder" parameterType="com.shop.api.domain.order.dto.OrderDTO">
+        INSERT INTO tb_order(
+            MEMBER_ID,PRODUCT_ID,CART_ID,
+            TOTAL_PRICE, TOTAL_AMOUNT, ORDER_CREATE_TIME
+        ) VALUES (
+            #{memberId},#{productId},#{cartId},
+            #{totalPrice},#{totalAmount},now()
+        )
+    </insert>
+
+    <update id="updateProductAmount" parameterType="com.shop.api.domain.order.dto.OrderDTO">
+        UPDATE tb_product SET PD_STOCK = PD_STOCK-#{totalAmount} WHERE PD_IDX = #{productId}
+    </update>
+
+</mapper>

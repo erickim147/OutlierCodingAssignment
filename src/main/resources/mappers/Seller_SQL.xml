@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.api.domain.seller.mapper.SellerMapper">
+
+        <resultMap type="com.shop.api.domain.seller.dto.SellerDTO" id="sellerDTO">
+            <result column="SELLER_IDX" property="sellerIdx"/>
+            <result column="SELLER_MEMBER_ID" property="sellerMemberId"/>
+            <result column="SHOP_NAME" property="shopName"/>
+            <result column="SHOP_ADDR" property="shopAddr"/>
+            <result column="SHOP_TEL_NUM" property="shopTelNum"/>
+            <result column="SELLER_CREATE_TIME" property="sellerCreateTime"/>
+        </resultMap>
+
+    <insert id="saveSeller" parameterType="com.shop.api.domain.seller.dto.SellerDTO">
+        INSERT INTO tb_seller(
+            SELLER_MEMBER_ID,
+            SHOP_NAME,
+            SHOP_ADDR,
+            SHOP_TEL_NUM,
+            SELLER_CREATE_TIME
+        ) VALUES (
+            #{sellerMemberId},
+            #{shopName},
+            #{shopAddr},
+            #{shopTelNum},
+            NOW()
+        )
+    </insert>
+
+    <select id="selectCount" parameterType="String" resultType="int">
+        select count(*) from tb_seller where SELLER_MEMBER_ID = #{sellerMemberId}
+    </select>
+
+</mapper>

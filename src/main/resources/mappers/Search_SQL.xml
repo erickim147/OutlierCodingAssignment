@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.api.domain.search.mapper.SearchMapper">
+
+    <resultMap type="com.shop.api.domain.product.dto.ProductDTO" id="productDTO">
+        <result column="PD_IDX" property="pdIdx"/>
+        <result column="PD_SELLER_ID" property="pdSellerId"/>
+        <result column="PD_LARGE_CAT" property="pdLargeCat"/>
+        <result column="PD_MIDDLE_CAT" property="pdMiddleCat"/>
+        <result column="PD_SUB_CAT" property="pdSubCat"/>
+        <result column="PD_NAME" property="pdName"/>
+        <result column="PD_PRICE" property="pdPrice"/>
+        <result column="PD_DISCOUNT" property="pdDiscount"/>
+        <result column="SET_SALE_PERIOD" property="setSalePeriod"/>
+        <result column="PD_SALE_PERIOD" property="pdSalePeriod"/>
+        <result column="PD_STOCK" property="pdStock"/>
+        <result column="PD_DESC" property="pdDesc"/>
+        <result column="PD_DELIVERY_CHARGE" property="pdDeliveryCharge"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="productDTO">
+        select * from tb_product
+    </select>
+
+    <select id="searchByTitle" parameterType="String" resultMap="productDTO">
+        SELECT * FROM tb_product WHERE PD_NAME LIKE '%${searchParam}%'
+    </select>
+
+    <select id="searchByCat" parameterType="String" resultMap="productDTO">
+        SELECT * FROM tb_product
+        WHERE
+            PD_LARGE_CAT LIKE '${searchParam}%'
+        OR
+            PD_MIDDLE_CAT LIKE '${searchParam}%'
+        OR
+            PD_SUB_CAT LIKE '${searchParam}%'
+    </select>
+
+
+
+</mapper>

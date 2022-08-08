@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.api.domain.category.mapper.CategoryMapper">
+
+    <resultMap type="com.shop.api.domain.category.dto.CategoryDTO" id="resultCat">
+        <id column="l_id" property="catId" javaType="long"/>
+        <result column="l_code" property="catCode" javaType="string"/>
+        <result column="l_codeName" property="catName" javaType="string"/>
+        <result column="l_upCode" property="upCode" javaType="string"/>
+        <collection property="children" ofType="com.shop.api.domain.category.dto.CategoryDTO">
+            <id column="m_id" property="catId" javaType="long"/>
+            <result column="m_code" property="catCode" javaType="string"/>
+            <result column="m_codeName" property="catName" javaType="string"/>
+            <result column="m_upCode" property="upCode" javaType="string"/>
+            <collection property="children" ofType="com.shop.api.domain.category.dto.CategoryDTO">
+                <id column="s_id" property="catId" javaType="long"/>
+                <result column="s_code" property="catCode" javaType="string"/>
+                <result column="s_codeName" property="catName" javaType="string"/>
+                <result column="s_upCode" property="upCode" javaType="string"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <resultMap type="com.shop.api.domain.category.dto.CategoryDTO" id="categoryDTO">
+        <id column="cat_id" property="catId" javaType="long"/>
+        <result column="cat_code" property="catCode" javaType="string"/>
+        <result column="cat_name" property="catName" javaType="string"/>
+        <result column="up_code" property="upCode" javaType="string"/>
+    </resultMap>
+
+    <select id="selectHierarchy" resultMap="resultCat">
+        select
+            l.cat_id l_id, l.cat_code l_code, l.cat_name l_codeName, l.up_code l_upCode,
+            m.cat_id m_id, m.cat_code m_code, m.cat_name m_codeName, m.up_code m_upCode,
+            s.cat_id s_id, s.cat_code s_code, s.cat_name s_codeName, s.up_code s_upCode
+        from tb_categories l
+            left outer join tb_categories m on (l.cat_code = m.up_code)
+            left outer join tb_categories s on (m.cat_code = s.up_code)
+
+    </select>
+
+   <select id="selectAll" resultMap="categoryDTO">
+        select cat_code, cat_name from tb_categories
+   </select>
+
+</mapper>

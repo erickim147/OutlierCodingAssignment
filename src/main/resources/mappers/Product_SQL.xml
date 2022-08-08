@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.api.domain.product.mapper.ProductMapper">
+
+    <resultMap type="com.shop.api.domain.product.dto.ProductDTO" id="productDTO">
+        <result column="PD_IDX" property="pdIdx"/>
+        <result column="PD_SELLER_ID" property="pdSellerId"/>
+        <result column="PD_LARGE_CAT" property="pdLargeCat"/>
+        <result column="PD_MIDDLE_CAT" property="pdMiddleCat"/>
+        <result column="PD_SUB_CAT" property="pdSubCat"/>
+        <result column="PD_NAME" property="pdName"/>
+        <result column="PD_PRICE" property="pdPrice"/>
+        <result column="PD_DISCOUNT" property="pdDiscount"/>
+        <result column="SET_SALE_PERIOD" property="setSalePeriod"/>
+        <result column="PD_SALE_PERIOD" property="pdSalePeriod"/>
+        <result column="PD_STOCK" property="pdStock"/>
+        <result column="PD_DESC" property="pdDesc"/>
+        <result column="PD_DELIVERY_CHARGE" property="pdDeliveryCharge"/>
+    </resultMap>
+
+    <insert id="saveProduct">
+        insert into tb_product(
+            PD_SELLER_ID,PD_LARGE_CAT,PD_MIDDLE_CAT,
+            PD_SUB_CAT,PD_NAME,PD_PRICE,
+            PD_DISCOUNT,SET_SALE_PERIOD,PD_SALE_PERIOD,
+            PD_STOCK,PD_DESC,PD_DELIVERY_CHARGE,
+            CREATE_TIME, UPDATE_TIME
+        ) values (
+            #{pdSellerId},#{pdLargeCat},#{pdMiddleCat},
+            #{pdSubCat},#{pdName},#{pdPrice},
+            #{pdDiscount},#{setSalePeriod},#{pdSalePeriod},
+            #{pdStock},#{pdDesc},#{pdDeliveryCharge},
+            NOW(), NULL
+        )
+    </insert>
+
+</mapper>

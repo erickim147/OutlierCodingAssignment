@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.api.security.mapper.JwtMapper">
+
+        <resultMap type="com.shop.api.security.dto.JwtTokenDTO" id="jwtTokenDTO">
+            <result column="REFRESH_TOKEN" property="refreshToken"/>
+            <result column="KEY_MEMBER_ID" property="tokenKey"/>
+
+        </resultMap>
+
+    <select id="existsByKeyMemberId" parameterType="String" resultType="boolean">
+        SELECT IF(COUNT(*) = 1, 1, 0)
+        FROM tb_token
+        WHERE KEY_MEMBER_ID = #{tokenKey}
+    </select>
+
+    <delete id="deleteByKeyMemberId" parameterType="String">
+        DELETE FROM tb_token
+        WHERE KEY_MEMBER_ID = #{tokenKey}
+    </delete>
+    
+    <insert id="saveToken" parameterType="com.shop.api.security.dto.JwtTokenDTO">
+        INSERT INTO tb_token(
+            REFRESH_TOKEN, KEY_MEMBER_ID, TOKEN_CREATE_TIME
+        ) VALUES (
+            #{refreshToken},
+            #{tokenKey},
+            NOW()
+        )
+    </insert>
+
+    <select id="findByRefreshToken" parameterType="String" resultMap="jwtTokenDTO">
+        select REFRESH_TOKEN FROM tb_token WHERE REFRESH_TOKEN = #{refreshToken}
+    </select>
+
+
+</mapper>

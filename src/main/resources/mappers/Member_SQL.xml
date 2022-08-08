@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.api.domain.member.mapper.MemberMapper">
+
+    <resultMap type="com.shop.api.domain.member.dto.MemberDTO" id="memberDTO">
+        <result column="MEMBER_ID" property="memberId"/>
+        <result column="MEMBER_PW" property="memberPw"/>
+        <result column="MEMBER_NM" property="memberNm"/>
+        <result column="MEMBER_PHONE_NUM" property="memberPhoneNum"/>
+        <result column="MEMBER_EMAIL" property="memberEmail"/>
+        <result column="MEMBER_ADDR" property="memberAddr"/>
+        <result column="MEMBER_BIRTH" property="memberBirth"/>
+    </resultMap>
+
+    <resultMap type="com.shop.api.domain.member.dto.RoleDTO" id="roleDTO">
+        <result column="ROLE_MEMBER_ID" property="roleMemberId"/>
+        <result column="MEMBER_ROLE" property="role"/>
+    </resultMap>
+
+    <!-- 회원 가입 (permitAll) -->
+    <insert id="joinMember" parameterType="com.shop.api.domain.member.dto.MemberDTO">
+        insert into tb_member(
+            IDX, MEMBER_ID, MEMBER_PW, MEMBER_NM, MEMBER_PHONE_NUM,
+            MEMBER_EMAIL, MEMBER_ADDR, MEMBER_BIRTH,
+            CREAT_TIME, LAST_LOGIN, PASS_CHANGE, UPDATE_TIME
+        ) values(
+            null ,#{memberId}, #{memberPw}, #{memberNm}, #{memberPhoneNum},
+            #{memberEmail}, #{memberAddr}, #{memberBirth},
+            NOW(), null, NOW(), null
+        )
+    </insert>
+
+    <!-- MEMBER ROLE Insert -->
+    <insert id="insertRole" parameterType="com.shop.api.domain.member.dto.RoleDTO">
+        INSERT INTO tb_role(
+            ROLE_MEMBER_ID
+            , MEMBER_ROLE
+        ) VALUES(
+            #{roleMemberId}
+            , #{role}
+        )
+    </insert>
+
+    <!-- 회원 전체 조회 (ROLE_ADMIN) -->
+    <select id="selectAll" resultMap="memberDTO">
+        select * from tb_member
+    </select>
+
+    <!-- 회원조회 (ROLE_USER) -->
+    <select id="selectOne" parameterType="String" resultMap="memberDTO">
+        select
+            MEMBER_ID, MEMBER_NM, MEMBER_PHONE_NUM,
+            MEMBER_EMAIL, MEMBER_ADDR, MEMBER_BIRTH
+        from tb_member where MEMBER_ID = #{memberId}
+    </select>
+
+    <!-- 로그인 -->
+    <select id="loginMember" parameterType="com.shop.api.domain.member.dto.MemberDTO" resultMap="memberDTO">
+        SELECT
+            MEMBER_ID,
+            MEMBER_PW
+        FROM tb_member
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+
+    <!--  -->
+
+    <!-- 회원 정보 수정 -->
+    <update id="updateUser" parameterType="com.shop.api.domain.member.dto.MemberDTO">
+        UPDATE tb_member SET
+            MEMBER_ID=#{memberId},
+            MEMBER_PW=#{memberPw},
+            MEMBER_NM=#{memberNm},
+            MEMBER_PHONE_NUM=#{memberPhoneNum},
+            MEMBER_EMAIL=#{memberEmail},
+            MEMBER_ADDR=#{memberAddr},
+            MEMBER_BIRTH=#{memberBirth},
+            UPDATE_RIME = NOW()
+        WHERE MEMBER_ID = #{memberId};
+    </update>
+
+    <select id="selectRoles" parameterType="String" resultType="String">
+        select MEMBER_ROLE from tb_role where ROLE_MEMBER_ID = #{memberId}
+    </select>
+
+</mapper>
