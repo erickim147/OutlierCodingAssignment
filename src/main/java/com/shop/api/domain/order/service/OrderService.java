@@ -29,7 +29,6 @@ public class OrderService {
             orderDTO.setTotalAmount(cartDTO.getAmount());
             orderDTO.setCartId(cartDTO.getCartId());
             orderDTO.setTotalPrice(cartDTO.getPrice());
-            orderDTO.setTotalAmount(cartDTO.getAmount());
             orderMapper.saveOrder(orderDTO);
             orderMapper.updateProductAmount(orderDTO);
             cartMapper.deleteCart(orderDTO.getProductId());
@@ -53,7 +52,7 @@ public class OrderService {
             throw new IllegalArgumentException("SEARCH_E1001");
         } else {
             List<ProductDTO> productDTORes = orderMapper.selectAllProduct(resultList);
-            List<OrderDTO> orderDTORes = orderMapper.selectAllOrder();
+            List<OrderDTO> orderDTORes = orderMapper.selectAllOrder(memberId);
             for(int i=0; i<orderDTORes.size(); i++){
                 orderDTORes.get(i).setProductInfo(productDTORes.get(i));
             }

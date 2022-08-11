@@ -88,7 +88,7 @@
     </select>
 
     <select id="selectAllOrder" resultMap="orderDTO">
-        SELECT * FROM tb_order ORDER BY PRODUCT_ID
+        SELECT * FROM tb_order where MEMBER_ID = #{memberId} ORDER BY PRODUCT_ID
     </select>
 
     <select id="selectProductId" parameterType="string" resultType="Integer">
@@ -100,7 +100,7 @@
     </select>
 
     <select id="selectCart" parameterType="long" resultMap="cartDTO">
-        SELECT MEMBER_ID, PRODUCT_ID, AMOUNT, PRICE FROM tb_cart WHERE CART_ID = #{cartId}
+        SELECT CART_ID, MEMBER_ID, PRODUCT_ID, AMOUNT, PRICE FROM tb_cart WHERE CART_ID = #{cartId}
     </select>
 
     <insert id="saveOrder" parameterType="com.shop.api.domain.order.dto.OrderDTO">

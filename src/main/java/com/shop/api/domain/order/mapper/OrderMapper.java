@@ -20,5 +20,5 @@ public interface OrderMapper {
     List<String> selectProductId(String memberId);
 
     List<ProductDTO> selectAllProduct(List<String> productList);
-    List<OrderDTO> selectAllOrder();
+    List<OrderDTO> selectAllOrder(String memberId);
 }
