@@ -7,6 +7,7 @@ public enum OrderResponseEnum {
 
 
     ORDER_SUCCESS(HttpStatus.OK, "ORDER_000", "구매 완료"),
+    SUCCESS_READ_ORDER(HttpStatus.OK, "ORDER_001", "구매 상품 조회완료"),
 
     NOT_FOUNT_CART(HttpStatus.OK, "ORDER_E100", "장바구니 정보를 찾을 수 없습니다.");
 

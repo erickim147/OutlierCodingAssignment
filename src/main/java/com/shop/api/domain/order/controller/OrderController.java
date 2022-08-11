@@ -36,9 +36,9 @@ public class OrderController {
         String memberId = SecurityContextHolder.getContext().getAuthentication().getName();
         List<OrderDTO> resultList = orderService.selectAll(memberId);
         ResultResDTO resultResDTO = ResultResDTO.builder()
-                .code(OrderResponseEnum.ORDER_SUCCESS.getCode())
-                .httpStatus(OrderResponseEnum.ORDER_SUCCESS.getStatus())
-                .message(OrderResponseEnum.ORDER_SUCCESS.getMessage())
+                .code(OrderResponseEnum.SUCCESS_READ_ORDER.getCode())
+                .httpStatus(OrderResponseEnum.SUCCESS_READ_ORDER.getStatus())
+                .message(OrderResponseEnum.SUCCESS_READ_ORDER.getMessage())
                 .count(resultList.size())
                 .data(resultList)
                 .build();
