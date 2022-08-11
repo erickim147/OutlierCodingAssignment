@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -25,6 +26,8 @@ public class JwtController {
     public ResponseEntity<?> validateRefreshToken(@RequestBody JwtTokenDTO jwtTokenDTO){
 
         Map<String, String> map = jwtService.validateRefreshToken(jwtTokenDTO.getRefreshToken());
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("accessToken", map.get("accessToken"));
 
         if(map.get("code").equals("TE106")){
 
@@ -42,7 +45,7 @@ public class JwtController {
                 .httpStatus(TokenResponseEnum.CREATE_REFRESH_TOKEN.getStatus())
                 .message(map.get("message"))
                 .count(1)
-                .data(map.get("accessToken"))
+                .data(resultMap)
                 .build();
 
         return new ResponseEntity<>(resultResDTO, resultResDTO.getHttpStatus());
