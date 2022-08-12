@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 public enum SearchResponseEnum {
 
 
-    SEARCH_SUCCESS(HttpStatus.OK, "SEARCH_000", "상품 검색 완료"),
+    SEARCH_SUCCESS(HttpStatus.OK, "SEARCH_000", "상품 검색 완료"), // OK
 
-    NOT_FOUNT_CAT_SEARCH_PARAM(HttpStatus.BAD_REQUEST, "SEARCH_E1000", "카테고리 검색의 요청 파라미터가 없습니다."),
-    NOT_FOUNT_ORDER(HttpStatus.BAD_REQUEST, "SEARCH_E1001", "구매 이력이 없습니다.");
+    NOT_FOUNT_CAT_SEARCH_PARAM(HttpStatus.BAD_REQUEST, "SEARCH_E1000", "카테고리 검색의 요청 파라미터가 없습니다."); // OK
+
 
 
 

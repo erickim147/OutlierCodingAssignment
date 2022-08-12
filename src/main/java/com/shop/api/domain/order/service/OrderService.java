@@ -49,7 +49,7 @@ public class OrderService {
     public List<OrderDTO> selectAll(String memberId) {
         List<String> resultList = orderMapper.selectProductId(memberId);
         if(resultList.size() == 0){
-            throw new IllegalArgumentException("SEARCH_E1001");
+            throw new IllegalArgumentException("ORDER_E101");
         } else {
             List<ProductDTO> productDTORes = orderMapper.selectAllProduct(resultList);
             List<OrderDTO> orderDTORes = orderMapper.selectAllOrder(memberId);

@@ -75,10 +75,10 @@ public class ApiExceptionAdvice {
                 httpStatus = SearchResponseEnum.NOT_FOUNT_CAT_SEARCH_PARAM.getStatus();
                 errorMessage = SearchResponseEnum.NOT_FOUNT_CAT_SEARCH_PARAM.getMessage();
                 break;
-            case "SEARCH_E1001":
-                errorCode = SearchResponseEnum.NOT_FOUNT_ORDER.getCode();
-                httpStatus = SearchResponseEnum.NOT_FOUNT_ORDER.getStatus();
-                errorMessage = SearchResponseEnum.NOT_FOUNT_ORDER.getMessage();
+            case "ORDER_E101":
+                errorCode = OrderResponseEnum.NOT_FOUNT_ORDER.getCode();
+                httpStatus = OrderResponseEnum.NOT_FOUNT_ORDER.getStatus();
+                errorMessage = OrderResponseEnum.NOT_FOUNT_ORDER.getMessage();
                 break;
             default:
                 errorCode = ResponseEnum.INTERNAL_SERVER_ERROR.getCode();

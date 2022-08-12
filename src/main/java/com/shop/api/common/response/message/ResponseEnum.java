@@ -32,8 +32,8 @@ public enum ResponseEnum {
     DELETE_USER(HttpStatus.OK, "UD000","회원 탈퇴 성공"),
 
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "AE100", "접근 권한이 없습니다."), // OK
-    REQUEST_PARAM_ERROR(HttpStatus.BAD_REQUEST, "AE101","요청 파라미터 형식이 잘못 되었습니다."),
-    REQUEST_MISSING_ERROR(HttpStatus.BAD_REQUEST, "AE102","요청 파라미터가 누락 되었습니다."),
+    REQUEST_PARAM_ERROR(HttpStatus.BAD_REQUEST, "AE101","요청 파라미터 형식이 잘못 되었습니다."), // OK
+    REQUEST_MISSING_ERROR(HttpStatus.BAD_REQUEST, "AE102","요청 파라미터가 누락 되었습니다."), //OK
 
     // 서버 Error
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E0003", "서버 내부 Error로 관리자에게 문의 바랍니다."), //OK
