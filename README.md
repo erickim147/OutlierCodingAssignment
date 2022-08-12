@@ -487,7 +487,6 @@
 
     |     Name     |  Type  |  Description  | Required |
     | :----------: | :----: | :-----------: | :------: |
-    | refreshToken | String | refreshToken  |    O     |
     |   shopName   | String |   매장 이름   |    O     |
     |   shopAddr   | String |   매장 주소   |    O     |
     |  shopTelNum  | String | 매장 전화번호 |    O     |
